@@ -1,0 +1,350 @@
+html {
+    font-family: "Rubik", sans-serif;
+}
+
+body {
+    margin-left: 20%;
+    margin-right: 20%;
+    width: 60%;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: normal;
+}
+/* ---------------------------------- */
+header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+header .left {
+    justify-self: start;
+    align-self: center;
+}
+
+header .center {
+    justify-self: center;
+    align-self: center;
+}
+
+.update {
+    background-color: #C9D2D7;
+    color: black;
+    font-size: 16px;
+    padding: 12px 40px;
+    border-radius: 12px;
+    border: none;
+}
+/* ---------------------------------- */
+main {
+    display: grid;
+}
+
+.top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 8%;
+}
+
+.weather {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: space-between;
+    grid-gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.bold {
+    text-align: start;
+}
+
+.normal {
+    text-align: end;
+}
+
+.top img {
+    width: 100%;
+    align-self: center;
+}
+
+.top .temperature {
+    font-size: 120px;
+    align-self: center;
+}
+
+.top .weather {
+    font-size: 20px;
+}
+
+.weather li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #A7AFB1;
+    color: white;
+    padding: 7px;
+    border-radius: 4px;
+}
+
+.top .weather li{
+    padding: 10px;
+}
+
+.weather .bold {
+    justify-self: start;
+    font-weight: bold;
+    align-self: center;
+}
+
+.weather .normal {
+    justify-self: end;
+    align-self: center;
+}
+
+.top > div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.top h2 {
+    font-size: 35px;
+    grid-column: 1/3;
+}
+
+/* ---------------------------------- */
+
+.add_favorite {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.add_favorite .first {
+    justify-self: start;
+}
+
+.add_favorite .second {
+    justify-self: end;
+    align-self: center;
+}
+
+.add_favorite h2{
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.add_form {
+    display: grid;
+    grid-template-columns: 1fr 40px;
+}
+
+#submit_city {
+    margin: 5px;
+    background-image: url("../images/plus.png");
+    height: 35px;
+    width: 35px;
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-color: transparent;
+    border: none;
+}
+
+#add_city {
+    border: none;
+    padding: 10px;
+    background-color: #EAEAEA;
+    align-self: center;
+
+}
+
+/* ---------------------------------- */
+
+.favorites {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 8%;
+    grid-row-gap: 10px;
+}
+
+.favorite {
+    display: grid;
+    grid-template-columns: 45% 20% 20% 15%;
+}
+
+.favorite h3 {
+    align-self: center;
+    font-size: 20px;
+    word-wrap: anywhere;
+}
+
+.favorite > span {
+    align-self: center;
+    font-size: 35px;
+}
+
+.favorite img {
+    align-self: center;
+    justify-self: center;
+    width: 50%;
+}
+
+.favorite button {
+    justify-self: end;
+    align-self: center;
+}
+.delete {
+    margin: 5px;
+    background-image: url("../images/cross.png");
+    height: 35px;
+    width: 35px;
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-color: transparent;
+    border: none;
+}
+
+.favorite ul{
+    grid-column: 1/5;
+}
+
+.inputNone {
+    display: none;
+}
+
+@media screen and (max-width: 1300px) {
+    .top .temperature {
+        font-size: 80px;
+    }
+}
+
+
+@media screen and (max-width: 1100px) {
+    body {
+        margin-left: 15%;
+        margin-right: 15%;
+        width: 70%;
+    }
+
+    .top .temperature {
+        font-size: 60px;
+    }
+
+    .favorite .temperature {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    body {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+    }
+
+    header .left{
+        grid-column: 1/3;
+    }
+
+    header .center {
+        grid-column: 3/4;
+    }
+
+    .top .weather {
+        font-size: 15px;
+    }
+
+    .favorite .weather {
+        font-size: 13px;
+    }
+
+}
+
+@media screen and (max-width: 650px) {
+    header {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .update span {
+        display: none;
+    }
+
+    .update {
+        background-image: url("../images/update.png");
+        height: 50px;
+        width: 50px;
+
+        background-size: 60%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-color: transparent;
+        border: none;
+    }
+
+    .top {
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+    }
+
+    .top .temperature {
+        font-size: 120px;
+    }
+
+    .top .weather {
+        font-size: 20px;
+    }
+
+    .add_favorite {
+        grid-template-columns: 1fr;
+    }
+
+    .add_favorite .second {
+        justify-self: start;
+        width: 100%;
+    }
+
+    .add_favorite .add_form {
+        display: grid;
+        grid-template-columns: 1fr 50px;
+    }
+
+    .favorites {
+        grid-template-columns: 1fr;
+        grid-column-gap: 8%;
+        grid-row-gap: 20px;
+    }
+
+    .favorite .temperature {
+        justify-self: center;
+        font-size: 28px;
+    }
+
+    .favorite .weather {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .top .temperature {
+        font-size: 70px;
+    }
+}
+
+@media screen and (max-width: 387px) {
+    .top .temperature {
+        font-size: 80px;
+    }
+
+    .top .weather {
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Погода</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
+        <link rel="shortcut icon" href="images/icon.png" type="imageы/icon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header>
+            <div class="left">
+                <h1>Погода здесь</h1>
+            </div>
+
+            <div class="center">
+                <button type="button" class="update" onclick="update()"><span>Обновить</span></button>
+            </div>
+        </header>
+        <main>
+            <div class="top">
+                <div>
+                    <h2>Обновление...</h2>
+                    <img src="images/unknown.png"/>
+                    <span class="temperature">-°C</span>
+                </div>
+                <ul class="weather">
+                    <li class="wind"><span class="bold">Ветер</span><span class="normal">-</span></li>
+                    <li class="cloud"><span class="bold">Облачность</span><span class="normal">-</span></li>
+                    <li class="pressure"><span class="bold">Давление</span><span class="normal">-</span></li>
+                    <li class="humidity"><span class="bold">Влажность</span><span class="normal">-</span></li>
+                    <li class="coord"><span class="bold">Координаты</span><span class="normal">-</span></li>
+                </ul>
+            </div>
+
+            <div class="add_favorite">
+                <div class="first">
+                    <h2>Избранное</h2>
+                </div>
+                <div class="second">
+                    <form class="add_form">
+                        <input type="text" name="city" id="add_city" placeholder="Добавить новый город" list="cities" autocomplete="off">
+                        <input type="text" class="inputNone">
+                        <datalist id="cities">
+                            <option value="Москва">
+                            <option value="Санкт-Петербург">
+                            <option value="Ставрополь">
+                            <option value="Брянск">
+                            <option value="Киргистан">
+                            <option value="Владивосток">
+                            <option value="Сочи">
+                            <option value="Казань">
+                            <option value="Калининград">
+                            <option value="Екатеринбург">
+                        </datalist>
+                        <button type="button" id="submit_city" onclick="addNewCity()"> </button>
+                    </form>
+                </div>
+            </div>
+
+            <ul class="favorites">
+
+            </ul>
+        </main>
+
+        <script src="js/script.js"></script>
+
+        <footer>
+
+        </footer>
+    </body>
+</html>
