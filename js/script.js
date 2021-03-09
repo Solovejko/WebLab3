@@ -1,53 +1,23 @@
 const timePause = 700;
 
-if (localStorage.getItem('globalId') == null)
-{
-    localStorage.setItem('globalId', '0');
-    let l = 0;
-
-    localStorage.setItem('id' + l, 'Москва');
-    localStorage.setItem('globalId', (l + 1).toString());
-    l++;
-
-    localStorage.setItem('id' + l, 'Лондон');
-    localStorage.setItem('globalId', (l + 1).toString());
-    l++;
-
-    localStorage.setItem('id' + l, 'Санкт-Петербург');
-    localStorage.setItem('globalId', (l + 1).toString());
-    l++;
-
-    localStorage.setItem('id' + l, 'Россия');
-    localStorage.setItem('globalId', (l + 1).toString());
-    l++;
-
-    localStorage.setItem('id' + l, 'Киргистан');
-    localStorage.setItem('globalId', (l + 1).toString());
-    l++;
-
-    localStorage.setItem('id' + l, 'Ставрополь');
-    localStorage.setItem('globalId', (l + 1).toString());
-    l++;
-}
-
 getLocation();
 loadFavoriteCity();
 
-function getId() {
-    return globalId++;
+async function loadFavoriteCity() {
+    let url = `http://localhost:3000/favorites`;
+
+    let response = await fetch(url);
+    let commits = await response.json();
+
+    for (let i = 0; i < commits.length; i++)
+        addNewCity(commits[i].name, true, commits[i]._id);
 }
 
-function loadFavoriteCity() {
-    for (let i = 0; i < Number.parseInt(localStorage.getItem('globalId')); i++)
-        addNewCity(localStorage.getItem('id' + i.toString()), true, 'id' + i.toString());
-}
 
 async function addNewCity(nameCity = undefined, load=false, id='id-1') {
-
     if (nameCity === null)
         return;
 
-    let myKey = '0b5edc7455a336d544760ce639198bc9';
     let input_city = document.getElementById('add_city');
 
     if (nameCity === undefined){
@@ -58,7 +28,7 @@ async function addNewCity(nameCity = undefined, load=false, id='id-1') {
     if (nameCity === "")
         return;
 
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${nameCity}&appid=${myKey}&units=metric&lang=ru`;
+    let url = `http://localhost:3000/weather/city?q=${nameCity}`;
 
     if (load)
         createEmptyElement(nameCity, id);
@@ -81,16 +51,25 @@ async function addNewCity(nameCity = undefined, load=false, id='id-1') {
         return;
     }
 
-    if (!load){
-        let l = localStorage.getItem('globalId');
-        l = Number.parseInt(l);
-        localStorage.setItem('id' + l, nameCity);
-        localStorage.setItem('globalId', (l + 1).toString());
-        id = 'id' + l;
-    }
+    if (!load) {
+        url = `http://localhost:3000/favorites`;
+        console.log(nameCity);
+        let responsePost = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: {
+                name: nameCity
+            }
+        });
 
-    if (!load)
+        let commitsPost = await responsePost.json();
+
+        console.log('Post ', commitsPost);
+        id = commitsPost._id;
         createEmptyElement(nameCity, id);
+    }
 
     let temp = ~~commits.main.temp;
     let img = commits.weather[0].icon + '.png';
@@ -105,7 +84,6 @@ async function addNewCity(nameCity = undefined, load=false, id='id-1') {
     refactorElement(nameCity, temp, img, wind, cloud, press, hum, x, y, id);
     }, timePause);
 }
-
 
 function refactorElement(city='Moscow', temperature=5, img='weather.png',
                     wind=6.0, cloud='Сloudy', pressure=1013,
@@ -128,8 +106,7 @@ function getLocation() {
         let x = coords.coords.latitude;
         let y = coords.coords.longitude;
 
-        let myKey = '0b5edc7455a336d544760ce639198bc9';
-        let url = `https://api.openweathermap.org/data/2.5/weather?lat=${x}&lon=${y}&appid=${myKey}&units=metric&lang=ru`;
+        let url = `http://localhost:3000/weather/coordinates?lat=${x}&lon=${y}`;
 
         let response = await fetch(url);
         let commits = await response.json();
@@ -142,7 +119,7 @@ function getLocation() {
         if (commits.cod === "404"){
             console.error('Нет информации об этом городе');
 
-            url = `https://api.openweathermap.org/data/2.5/weather?q=Москва&appid=${myKey}&units=metric&lang=ru`;
+            url = `http://localhost:3000/weather/city?q=Москва`;
             response = await fetch(url);
             commits = await response.json();
         }
@@ -168,8 +145,7 @@ function getLocation() {
     }
 
     async function error({ message }) {
-        let myKey = '0b5edc7455a336d544760ce639198bc9';
-        let url = `https://api.openweathermap.org/data/2.5/weather?q=Москва&appid=${myKey}&units=metric&lang=ru`;
+        let url = `http://localhost:3000/weather/city?q=Москва`;
         let response = await fetch(url);
         let commits = await response.json();
 
@@ -243,7 +219,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 
     let newSpan = document.createElement('span');
     newSpan.setAttribute('class', 'temperature');
-/**/newSpan.textContent = '-°C';
+    newSpan.textContent = '-°C';
     let newImg = document.createElement('img');
     newImg.setAttribute('src', 'images/unknown.png');
     let newButton = document.createElement('button');
@@ -262,7 +238,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 
     let newSpanNormal1 = document.createElement('span');
     newSpanNormal1.setAttribute('class', 'normal');
-/**/newSpanNormal1.textContent = '-';
+    newSpanNormal1.textContent = '-';
     newLi1.appendChild(newSpanBold1);
     newLi1.appendChild(newSpanNormal1);
 
@@ -274,7 +250,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 
     let newSpanNormal2 = document.createElement('span');
     newSpanNormal2.setAttribute('class', 'normal');
-/**/newSpanNormal2.textContent = '-';
+    newSpanNormal2.textContent = '-';
 
     newLi2.appendChild(newSpanBold2);
     newLi2.appendChild(newSpanNormal2);
@@ -287,7 +263,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 
     let newSpanNormal3 = document.createElement('span');
     newSpanNormal3.setAttribute('class', 'normal');
-/**/newSpanNormal3.textContent = '-';
+    newSpanNormal3.textContent = '-';
 
     newLi3.appendChild(newSpanBold3);
     newLi3.appendChild(newSpanNormal3);
@@ -300,7 +276,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 
     let newSpanNormal4 = document.createElement('span');
     newSpanNormal4.setAttribute('class', 'normal');
-/**/newSpanNormal4.textContent = '-';
+    newSpanNormal4.textContent = '-';
 
     newLi4.appendChild(newSpanBold4);
     newLi4.appendChild(newSpanNormal4);
@@ -313,7 +289,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 
     let newSpanNormal5 = document.createElement('span');
     newSpanNormal5.setAttribute('class', 'normal');
-/**/newSpanNormal5.textContent = '-';
+    newSpanNormal5.textContent = '-';
 
     newLi5.appendChild(newSpanBold5);
     newLi5.appendChild(newSpanNormal5);
@@ -334,12 +310,22 @@ function createEmptyElement(city='Moscow', id='id-1') {
 }
 
 function del(idCity) {
-    document.getElementById(idCity).style.display = "none";
-    localStorage.removeItem(idCity);
+    let url = `http://localhost:3000/favorites`;
+
+    fetch(url, {
+        method: 'DELETE',
+        body: {
+            _id: idCity
+        }
+    })
+        .then(res => {
+            document.getElementById(idCity).style.display = "none";
+            console.log(res);
+        })
+        .catch(err => console.error(err));
 }
 
-document.getElementById("add_city")
-    .addEventListener("keyup", function(event) {
+document.getElementById("add_city").addEventListener("keyup", function(event) {
         event.preventDefault();
         if (event.keyCode === 13)
             document.getElementById("submit_city").click();
