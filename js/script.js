@@ -4,7 +4,7 @@ getLocation();
 loadFavoriteCity();
 
 async function loadFavoriteCity() {
-    let url = `https://37.147.189.132:3000/favorites`;
+    let url = `http://37.147.189.132:3000/favorites`;
 
     let response = await fetch(url);
     let commits = await response.json();
@@ -28,7 +28,7 @@ async function addNewCity(nameCity = undefined, load=false, id='id-1') {
     if (nameCity === "")
         return;
 
-    let url = `https://37.147.189.132:3000/weather/city?q=${nameCity}`;
+    let url = `http://37.147.189.132:3000/weather/city?q=${nameCity}`;
 
     if (load)
         createEmptyElement(nameCity, id);
@@ -52,7 +52,7 @@ async function addNewCity(nameCity = undefined, load=false, id='id-1') {
     }
 
     if (!load) {
-        url = `https://37.147.189.132:3000/favorites`;
+        url = `http://37.147.189.132:3000/favorites`;
         console.log(nameCity);
 
         let responsePost = await fetch(url, {
@@ -107,7 +107,7 @@ function getLocation() {
         let x = coords.coords.latitude;
         let y = coords.coords.longitude;
 
-        let url = `https://37.147.189.132:3000/weather/coordinates?lat=${x}&lon=${y}`;
+        let url = `http://37.147.189.132:3000/weather/coordinates?lat=${x}&lon=${y}`;
 
         let response = await fetch(url);
         let commits = await response.json();
@@ -120,7 +120,7 @@ function getLocation() {
         if (commits.cod === "404"){
             console.error('Нет информации об этом городе');
 
-            url = `https://37.147.189.132:3000/weather/city?q=Москва`;
+            url = `http://37.147.189.132:3000/weather/city?q=Москва`;
             response = await fetch(url);
             commits = await response.json();
         }
@@ -146,7 +146,7 @@ function getLocation() {
     }
 
     async function error({ message }) {
-        let url = `https://37.147.189.132:3000/weather/city?q=Москва`;
+        let url = `http://37.147.189.132:3000/weather/city?q=Москва`;
         let response = await fetch(url);
         let commits = await response.json();
 
