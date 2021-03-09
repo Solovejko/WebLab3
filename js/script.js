@@ -54,14 +54,15 @@ async function addNewCity(nameCity = undefined, load=false, id='id-1') {
     if (!load) {
         url = `http://localhost:3000/favorites`;
         console.log(nameCity);
+
         let responsePost = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json'
             },
-            body: {
+            body: JSON.stringify({
                 name: nameCity
-            }
+            })
         });
 
         let commitsPost = await responsePost.json();
@@ -314,9 +315,12 @@ function del(idCity) {
 
     fetch(url, {
         method: 'DELETE',
-        body: {
-            _id: idCity
-        }
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: idCity
+        })
     })
         .then(res => {
             document.getElementById(idCity).style.display = "none";
