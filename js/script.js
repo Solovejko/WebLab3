@@ -311,7 +311,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 }
 
 function del(idCity) {
-    let url = `https://37.147.189.132:3000/favorites`;
+    let url = `http://37.147.189.132:3000/favorites`;
 
     fetch(url, {
         method: 'DELETE',
