@@ -1,89 +1,88 @@
-const timePause = 700;
-
 getLocation();
-loadFavoriteCity();
+loadFavoriteCities();
 
-async function loadFavoriteCity() {
+function loadFavoriteCities() {
     let url = `http://37.147.189.132:3000/favorites`;
 
-    let response = await fetch(url);
-    let commits = await response.json();
-
-    for (let i = 0; i < commits.length; i++)
-        addNewCity(commits[i].name, true, commits[i]._id);
+    fetch(url)
+        .then(response => {return response.json()})
+        .then(commits => {
+            for (let i = 0; i < commits.length; i++)
+                loadCity(commits[i].name, commits[i]._id);
+        })
+        .catch(err => console.error(err));
 }
 
+function loadCity(nameCity, id) {
+    createEmptyElement(nameCity, id);
+    let url = `http://37.147.189.132:3000/weather/city?q=${nameCity}`;
 
-async function addNewCity(nameCity = undefined, load=false, id='id-1') {
-    if (nameCity === null)
-        return;
+    fetch(url)
+        .then(response => {return response.json()})
+        .then(commits => {
+            if (commits.cod === "401" || commits.cod === "404" || commits.cod === "429")
+                throw commits.cod;
 
+            let temp = ~~commits.main.temp;
+            let img = commits.weather[0].icon + '.png';
+            let wind = commits.wind.speed;
+            let cloud = commits.weather[0].description;
+            let press = commits.main.pressure;
+            let hum = commits.main.humidity;
+            let x = commits.coord.lon.toFixed(1);
+            let y = commits.coord.lat.toFixed(1);
+
+            refactorElement(nameCity, temp, img, wind, cloud, press, hum, x, y, id);
+        })
+        .catch(err => console.error(err));
+}
+
+function addNewCity(nameCity = undefined, load=false, id='id-1') {
     let input_city = document.getElementById('add_city');
 
-    if (nameCity === undefined){
-        nameCity = input_city.value;
-        input_city.value = '';
-    }
+    nameCity = input_city.value;
+    input_city.value = '';
 
     if (nameCity === "")
         return;
 
     let url = `http://37.147.189.132:3000/weather/city?q=${nameCity}`;
 
-    if (load)
-        createEmptyElement(nameCity, id);
+    fetch(url)
+        .then(response => {return response.json()})
+        .then(commits => {
+            if (commits.cod === "401" || commits.cod === "404" || commits.cod === "429")
+                throw commits.cod;
 
-    let response = await fetch(url);
-    let commits = await response.json();
+            url = `http://37.147.189.132:3000/favorites`;
 
-    if (commits.cod === "401"){
-        console.error('Проблемы с ключом');
-        return;
-    }
-
-    if (commits.cod === "404"){
-        console.error('Нет информации об этом городе');
-        return;
-    }
-
-    if (commits.cod === "429"){
-        console.error('Запросы в минуту превышают лимит бесплатного аккаунта');
-        return;
-    }
-
-    if (!load) {
-        url = `http://37.147.189.132:3000/favorites`;
-        console.log(nameCity);
-
-        let responsePost = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: nameCity
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: nameCity
+                })
             })
-        });
+                .then(response => {return response.json()})
+                .then(commitsPost => {
+                    createEmptyElement(nameCity, commitsPost._id);
 
-        let commitsPost = await responsePost.json();
+                    let temp = ~~commits.main.temp;
+                    let img = commits.weather[0].icon + '.png';
+                    let wind = commits.wind.speed;
+                    let cloud = commits.weather[0].description;
+                    let press = commits.main.pressure;
+                    let hum = commits.main.humidity;
+                    let x = commits.coord.lon.toFixed(1);
+                    let y = commits.coord.lat.toFixed(1);
 
-        console.log('Post ', commitsPost);
-        id = commitsPost._id;
-        createEmptyElement(nameCity, id);
-    }
-
-    let temp = ~~commits.main.temp;
-    let img = commits.weather[0].icon + '.png';
-    let wind = commits.wind.speed;
-    let cloud = commits.weather[0].description;
-    let press = commits.main.pressure;
-    let hum = commits.main.humidity;
-    let x = commits.coord.lon.toFixed(1);
-    let y = commits.coord.lat.toFixed(1);
-
-    setTimeout(() => {
-    refactorElement(nameCity, temp, img, wind, cloud, press, hum, x, y, id);
-    }, timePause);
+                    refactorElement(nameCity, temp, img, wind, cloud, press, hum, x, y, commitsPost._id);
+                })
+                .catch(err => console.error(err));
+            })
+        .catch(err => console.error(err));
 }
 
 function refactorElement(city='Moscow', temperature=5, img='weather.png',
@@ -109,70 +108,53 @@ function getLocation() {
 
         let url = `http://37.147.189.132:3000/weather/coordinates?lat=${x}&lon=${y}`;
 
-        let response = await fetch(url);
-        let commits = await response.json();
+        fetch(url)
+            .then(response => {return response.json()})
+            .then(commits => {
+                if (commits.cod === "401" || commits.cod === "404" || commits.cod === "429")
+                    throw commits.cod;
 
-        if (commits.cod === "401"){
-            console.error('Проблемы с ключом');
-            return;
-        }
+                let nameCity = commits.name;
+                let temp = ~~commits.main.temp;
+                let img = commits.weather[0].icon + '.png';
+                let wind = commits.wind.speed;
+                let cloud = commits.weather[0].description;
+                let press = commits.main.pressure;
+                let hum = commits.main.humidity;
+                x = commits.coord.lon.toFixed(1);
+                y = commits.coord.lat.toFixed(1);
 
-        if (commits.cod === "404"){
-            console.error('Нет информации об этом городе');
-
-            url = `http://37.147.189.132:3000/weather/city?q=Москва`;
-            response = await fetch(url);
-            commits = await response.json();
-        }
-
-        if (commits.cod === "429"){
-            console.error('Запросы в минуту превышают лимит бесплатного аккаунта');
-            return;
-        }
-
-        let nameCity = commits.name;
-        let temp = ~~commits.main.temp;
-        let img = commits.weather[0].icon + '.png';
-        let wind = commits.wind.speed;
-        let cloud = commits.weather[0].description;
-        let press = commits.main.pressure;
-        let hum = commits.main.humidity;
-        x = commits.coord.lon.toFixed(1);
-        y = commits.coord.lat.toFixed(1);
-
-        setTimeout(() => {
-            refactorTopCity(nameCity, temp, img, wind, cloud, press, hum, x, y);
-        }, timePause);
+                refactorTopCity(nameCity, temp, img, wind, cloud, press, hum, x, y);
+            })
+            .catch(err => {
+                console.error(err);
+            })
     }
 
     async function error({ message }) {
         let url = `http://37.147.189.132:3000/weather/city?q=Москва`;
-        let response = await fetch(url);
-        let commits = await response.json();
 
-        if (commits.cod === "401"){
-            console.error('Проблемы с ключом');
-            return;
-        }
+        fetch(url)
+            .then(response => {return response.json()})
+            .then(commits => {
+                if (commits.cod === "401" || commits.cod === "404" || commits.cod === "429")
+                    throw commits.cod;
 
-        if (commits.cod === "429"){
-            console.error('Запросы в минуту превышают лимит бесплатного аккаунта');
-            return;
-        }
+                let nameCity = commits.name;
+                let temp = ~~commits.main.temp;
+                let img = commits.weather[0].icon + '.png';
+                let wind = commits.wind.speed;
+                let cloud = commits.weather[0].description;
+                let press = commits.main.pressure;
+                let hum = commits.main.humidity;
+                x = commits.coord.lon.toFixed(1);
+                y = commits.coord.lat.toFixed(1);
 
-        let nameCity = commits.name;
-        let temp = ~~commits.main.temp;
-        let img = commits.weather[0].icon + '.png';
-        let wind = commits.wind.speed;
-        let cloud = commits.weather[0].description;
-        let press = commits.main.pressure;
-        let hum = commits.main.humidity;
-        x = commits.coord.lon.toFixed(1);
-        y = commits.coord.lat.toFixed(1);
-
-        setTimeout(() => {
-            refactorTopCity(nameCity, temp, img, wind, cloud, press, hum, x, y);
-        }, timePause);
+                refactorTopCity(nameCity, temp, img, wind, cloud, press, hum, x, y);
+            })
+            .catch(err => {
+                console.error(err);
+            })
 
         console.error(message);
     }
@@ -324,7 +306,6 @@ function del(idCity) {
     })
         .then(res => {
             document.getElementById(idCity).style.display = "none";
-            console.log(res);
         })
         .catch(err => console.error(err));
 }
