@@ -221,6 +221,9 @@ main {
     .top .temperature {
         font-size: 80px;
     }
+    .favorites .temperature {
+        font-size: 30px;
+    }
 }
 
 
