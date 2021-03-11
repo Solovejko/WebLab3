@@ -37,7 +37,10 @@ function loadCity(nameCity, id) {
 
             refactorElement(nameCity, temp, img, wind, cloud, press, hum, x, y, id);
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            delFast(id);
+            console.error(err);
+        });
 }
 
 function addNewCity(nameCity = undefined, id='id-1') {
