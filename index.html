@@ -14,8 +14,8 @@
                 <h1>Погода здесь</h1>
             </div>
 
-            <div class="center">
-                <button type="button" class="update" onclick="update()"><span>Обновить</span></button>
+            <div class="center" id="butHeader">
+                <button type="button" class="update"><span>Обновить</span></button>
             </div>
         </header>
         <main>
@@ -39,9 +39,8 @@
                     <h2>Избранное</h2>
                 </div>
                 <div class="second">
-                    <form class="add_form">
+                    <form class="add_form" id="myForm">
                         <input type="text" name="city" id="add_city" placeholder="Добавить новый город" list="cities" autocomplete="off">
-                        <input type="text" class="inputNone">
                         <datalist id="cities">
                             <option value="Москва">
                             <option value="Санкт-Петербург">
@@ -54,13 +53,27 @@
                             <option value="Калининград">
                             <option value="Екатеринбург">
                         </datalist>
-                        <button type="button" id="submit_city" onclick="addNewCity()"> </button>
+                        <button type="submit" id="submit_city"> </button>
                     </form>
                 </div>
             </div>
 
             <ul class="favorites">
-
+                <template id="tempCity">
+                    <li class="favorite" id="">
+                        <h3>Обновление...</h3>
+                        <img src="images/unknown.png"/>
+                        <span class="temperature">-°C</span>
+                        <button type="button" class="delete"></button>
+                        <ul class="weather">
+                            <li class="wind"><span class="bold">Ветер</span><span class="normal">-</span></li>
+                            <li class="cloud"><span class="bold">Облачность</span><span class="normal">-</span></li>
+                            <li class="pressure"><span class="bold">Давление</span><span class="normal">-</span></li>
+                            <li class="humidity"><span class="bold">Влажность</span><span class="normal">-</span></li>
+                            <li class="coord"><span class="bold">Координаты</span><span class="normal">-</span></li>
+                        </ul>
+                    </li>
+                </template>
             </ul>
         </main>
 
