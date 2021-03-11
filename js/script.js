@@ -11,7 +11,7 @@ function loadFavoriteCities() {
                 loadCity(commits[i].name, commits[i]._id);
         })
         .catch(err => {
-            alert('Произошла ошибка при загрузке избранных городов');
+            alert('Произошла ошибка при загрузке списка избранных городов');
             console.error(err);
         });
 }
@@ -39,6 +39,7 @@ function loadCity(nameCity, id) {
         })
         .catch(err => {
             delFast(id);
+            alert(`Произошла ошибка при загрузке города: ${nameCity}`);
             console.error(err);
         });
 }
@@ -91,7 +92,7 @@ function addNewCity(nameCity = undefined, id='id-1') {
                     refactorElement(nameCity, temp, img, wind, cloud, press, hum, x, y, commitsPost._id);
                 })
                 .catch(err => {
-                    alert('Произошла ошибка');
+                    alert(`Произошла ошибка при попытке добавление города ${nameCity} в базу данных`);
                     console.error(err);
                     delFast(id);
                 });
