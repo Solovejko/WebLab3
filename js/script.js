@@ -10,7 +10,10 @@ function loadFavoriteCities() {
             for (let i = 0; i < commits.length; i++)
                 loadCity(commits[i].name, commits[i]._id);
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            alert('Произошла ошибка при загрузке избранных городов');
+            console.error(err);
+        });
 }
 
 function loadCity(nameCity, id) {
@@ -153,6 +156,8 @@ function getLocation() {
                     alert('Нет информации об этом городе');
                 else if (err === "429")
                     alert('Запросы в минуту превышают лимит бесплатного аккаунта');
+                else
+                    alert('Произошла ошибка при загрузке данных геолокации');
 
                 console.error(err);
             });
@@ -186,11 +191,13 @@ function getLocation() {
                     alert('Нет информации об этом городе');
                 else if (err === "429")
                     alert('Запросы в минуту превышают лимит бесплатного аккаунта');
+                else
+                    alert('Произошла ошибка при загрузке данных геолокации');
 
                 console.error(err);
             });
 
-        alert('Пользователь запретил геолокацию');
+        console.error('Пользователь запретил геолокацию');
     }
 }
 
@@ -256,6 +263,8 @@ function del(idCity) {
                 alert('Нет информации об этом городе');
             else if (err === "429")
                 alert('Запросы в минуту превышают лимит бесплатного аккаунта');
+            else
+                alert('Произошла ошибка');
 
             console.error(err);
         });
