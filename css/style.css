@@ -40,6 +40,21 @@ header .center {
     border-radius: 12px;
     border: none;
 }
+
+.update:hover {
+    background-color: #A7B6BE;
+}
+
+.update:active {
+    background-color: #667D8A;
+}
+
+button,
+button:active,
+button:focus {
+    outline: none;
+}
+
 /* ---------------------------------- */
 main {
     display: grid;
@@ -154,6 +169,10 @@ main {
     border: none;
 }
 
+#submit_city:active {
+    background-image: url("../images/plus_small.png");
+}
+
 #add_city {
     border: none;
     padding: 10px;
@@ -197,6 +216,7 @@ main {
     justify-self: end;
     align-self: center;
 }
+
 .delete {
     margin: 5px;
     background-image: url("../images/cross.png");
@@ -207,6 +227,10 @@ main {
     background-position: 50% 50%;
     background-color: transparent;
     border: none;
+}
+
+.delete:active {
+    background-image: url("../images/cross_small.png");
 }
 
 .favorite ul{
