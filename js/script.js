@@ -1,8 +1,10 @@
+const globalUrl = "https://dry-mountain-96561.herokuapp.com";
+
 getLocation();
 loadFavoriteCities();
 
 function loadFavoriteCities() {
-    let url = `http://37.147.189.132:3000/favorites`;
+    let url = `${globalUrl}/favorites`;
 
     fetch(url)
         .then(response => {return response.json()})
@@ -18,7 +20,7 @@ function loadFavoriteCities() {
 
 function loadCity(nameCity, id) {
     createEmptyElement(nameCity, id);
-    let url = `http://37.147.189.132:3000/weather/city?q=${nameCity}`;
+    let url = `${globalUrl}/weather/city?q=${nameCity}`;
 
     fetch(url)
         .then(response => {return response.json()})
@@ -53,7 +55,7 @@ function addNewCity(nameCity = undefined, id='id-1') {
     if (nameCity === "")
         return;
 
-    let url = `http://37.147.189.132:3000/weather/city?q=${nameCity}`;
+    let url = `${globalUrl}/weather/city?q=${nameCity}`;
 
     id = Date.now().toString();
     createEmptyElement(nameCity, id);
@@ -64,7 +66,7 @@ function addNewCity(nameCity = undefined, id='id-1') {
             if (commits.cod === "401" || commits.cod === "404" || commits.cod === "429")
                 throw commits.cod;
 
-            url = `http://37.147.189.132:3000/favorites`;
+            url = `${globalUrl}/favorites`;
 
             fetch(url, {
                 method: 'POST',
@@ -133,7 +135,7 @@ function getLocation() {
         let x = coords.coords.latitude;
         let y = coords.coords.longitude;
 
-        let url = `http://37.147.189.132:3000/weather/coordinates?lat=${x}&lon=${y}`;
+        let url = `${globalUrl}/weather/coordinates?lat=${x}&lon=${y}`;
 
         fetch(url)
             .then(response => {return response.json()})
@@ -246,7 +248,7 @@ function createEmptyElement(city='Moscow', id='id-1') {
 }
 
 function del(idCity) {
-    let url = `http://37.147.189.132:3000/favorites`;
+    let url = `${globalUrl}/favorites`;
 
     fetch(url, {
         method: 'DELETE',
