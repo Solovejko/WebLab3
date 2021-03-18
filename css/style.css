@@ -154,7 +154,7 @@ main {
 
 .add_form {
     display: grid;
-    grid-template-columns: 1fr 40px;
+    grid-template-columns: 1fr 45px;
 }
 
 #submit_city {
@@ -335,13 +335,14 @@ main {
     }
 
     .add_favorite .second {
-        justify-self: start;
+        justify-self: end;
         width: 100%;
     }
 
     .add_favorite .add_form {
         display: grid;
-        grid-template-columns: 1fr 50px;
+        grid-template-columns: 1fr 45px;
+        justify-content: space-between;
     }
 
     .favorites {
