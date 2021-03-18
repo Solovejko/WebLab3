@@ -170,7 +170,7 @@ function getLocation() {
     }
 
     async function error({ message }) {
-        let url = `http://37.147.189.132:3000/weather/city?q=Москва`;
+        let url = `${globalUrl}/weather/city?q=Москва`;
 
         fetch(url)
             .then(response => {return response.json()})
